@@ -13,6 +13,8 @@
  *     }
  * }
  */
+//Recursive Approach
+
 class Solution {
     List<Integer> ans = new ArrayList<>();
     public List<Integer> inorderTraversal(TreeNode root) {
@@ -26,5 +28,32 @@ class Solution {
         inOrder(node.left);
         ans.add(node.val);
         inOrder(node.right);
+    }
+}
+
+//Iterative Approach
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        if(root == null){
+            return ans;
+        }
+        while(true){
+            if(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            else{
+                if(stack.isEmpty()){
+                    break;
+                }
+                root = stack.peek();
+                ans.add(root.val);
+                stack.pop();
+                root = root.right;
+            }
+        }
+        return ans;
     }
 }

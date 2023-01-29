@@ -106,3 +106,61 @@ class Solution {
         return lst;
     }
 }
+
+// Using ArrayDeque
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> lst = new ArrayList<List<Integer>>();
+        if(root == null){
+            return lst;
+        }
+        ArrayDeque<TreeNode> queue1 = new ArrayDeque<>();
+        queue1.add(root);
+        boolean level = true;
+        while(!queue1.isEmpty()){
+            ArrayDeque<TreeNode> queue2 = new ArrayDeque<>();
+            List<Integer> ans = new ArrayList<>();
+            int size = queue1.size();
+            for(int i = 0;i < size;i++){
+                root = queue1.peek();
+                ans.add(queue1.poll().val);
+                if(level){
+                    if(root.left != null){
+                        queue2.addFirst(root.left);
+                    }
+                    if(root.right != null){
+                        queue2.addFirst(root.right);
+                    }
+                }
+                else{
+                    if(root.right != null){
+                        queue2.addFirst(root.right);
+                    }
+                    if(root.left != null){
+                        queue2.addFirst(root.left);
+                    }
+                }
+            }
+            level = !level;
+            lst.add(ans);
+            queue1 = queue2;
+        }
+        return lst;
+    }
+}

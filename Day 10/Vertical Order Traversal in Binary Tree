@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        TreeMap<Integer,TreeMap<Integer,List<Integer>>> map = new TreeMap<>();
+        Traversal(root,0,0,map);
+        List<List<Integer>> lst = new ArrayList<>();
+        int offset = 0;
+         for (TreeMap<Integer, List<Integer>> nums : map.values()){
+            lst.add(new ArrayList<>());
+            for (List<Integer> curls : nums.values()){
+                Collections.sort(curls);
+                for (int value : curls) lst.get(offset).add(value);
+            }
+            offset++;
+        }
+        return lst;
+    }
+    public void Traversal(TreeNode root,int offset,int level,TreeMap<Integer, TreeMap<Integer, List<Integer>>> map){
+        if(root == null){
+            return;
+        }
+        if(!map.containsKey(offset)){
+            map.put(offset,new TreeMap<>());
+        }
+        if(!map.get(offset).containsKey(level)){
+            map.get(offset).put(level,new ArrayList<>());
+        }
+        map.get(offset).get(level).add(root.val);
+        Traversal(root.left,offset - 1,level + 1,map);
+        Traversal(root.right,offset + 1,level + 1,map);
+        
+    }
+}

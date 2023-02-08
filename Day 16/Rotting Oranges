@@ -1,0 +1,52 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        int time = -1;
+        int fresh_oranges = 0;
+        Queue<Pair> queue = new LinkedList<>();
+        int m = grid.length;
+        int n = grid[0].length;
+        for(int i = 0;i < m;i++) {
+            for(int j = 0;j < n;j++) {
+                if(grid[i][j] == 1) {fresh_oranges++;}
+                if(grid[i][j] == 2)
+                    queue.add(new Pair(i,j));
+
+            }
+        }
+        if(fresh_oranges == 0) {return 0;}
+        int[] row_offset = {-1,0,0,1};
+        int[] col_offset = {0,-1,1,0};
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for(int i = 0;i < size;i++) {
+                Pair pair = queue.poll();
+                int row = pair.row;
+                int col = pair.col;
+                for(int j = 0;j < 4;j++) {
+                    int nrow = row_offset[j] + row;
+                    int ncol = col_offset[j] + col;
+                    if(nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && grid[nrow][ncol] == 1) {
+                        grid[nrow][ncol] = 2;
+                        queue.add(new Pair(nrow,ncol));
+                    }
+                }
+            }
+            time++;
+        }
+        for(int i = 0;i < m;i++) {
+            for(int j = 0;j < n;j++) {
+                if(grid[i][j] == 1) {return -1;}
+            }
+        }
+        return time;
+    }
+    public class Pair {
+        int row;
+        int col;
+        public Pair(int row,int col) {
+            this.row = row;
+            this.col = col;
+        }
+    }
+    
+}

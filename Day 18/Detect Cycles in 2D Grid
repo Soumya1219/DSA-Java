@@ -1,0 +1,31 @@
+class Solution {
+    public boolean containsCycle(char[][] grid) {
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        for(int i = 0;i < grid.length;i++) {
+            for(int j = 0;j < grid[0].length;j++) {
+                if(visited[i][j] == false && dfs(-1,-1,grid,visited,i,j)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean dfs(int prevI,int prevJ,char[][] grid,boolean[][] visited,int currI,int currJ) {
+        if(visited[currI][currJ] == true) {
+            return true;
+        }
+        visited[currI][currJ] = true;
+        int[] row_offset = {-1,0,0,1};
+        int[] col_offset = {0,-1,1,0};
+        for(int i = 0;i < row_offset.length;i++) {
+            int nrow = row_offset[i] + currI;
+            int ncol = col_offset[i] + currJ;
+            if(nrow >= 0 && nrow < grid.length && ncol >= 0 && ncol < grid[0].length && (prevI != nrow || prevJ != ncol) && grid[nrow][ncol] == grid[currI][currJ]) {
+                if(dfs(currI,currJ,grid,visited,nrow,ncol)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
